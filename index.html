@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="author" content="Audrey DENOUAL">
+    <meta name="description" content="Hangman Game">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="icon" href="">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Hangman Game</title>
+</head>
+
+<body>
+	<header>
+		<h1>Hangman Game</h1>
+	</header>
+
+	<div class="guess">
+		<div class="guessWord">
+		</div>
+		<form class="guessForm">
+			<input type="text" class="guessLetter" maxlength="1" placeholder="Enter a letter"></input>
+			<button type="submit" class="guessButton">Submit</button>
+		</form>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="game.js"></script>
+</body>
+
+</html>
