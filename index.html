@@ -22,17 +22,27 @@
 		<h1>Hangman Game</h1>
 	</header>
 
-	<div class="wrong">
-		<div class="hangman"></div>
-		<div class="wrongLetters"></div>
-	</div>
+	<div class="container">
+		<div class="row">
+			<div class="left col-md">
+				<div id="hangman"></div>
+				<div id="wrongLetters"></div>
+			</div>
 
-	<div class="guess">
-		<div class="guessWord"></div>
-		<form class="guessForm">
-			<input type="text" class="guessLetter" pattern="[A-Za-z]" maxlength="1" placeholder="Enter a letter"></input>
-			<button type="submit" class="guessButton">Submit</button>
-		</form>
+			<div class="center col-md">
+				<div id="guessWord"></div>
+				<form id="guessForm">
+					<input type="text" id="guessLetter" pattern="[A-Za-z]" maxlength="1" placeholder="Enter a letter"></input>
+					<button type="submit" id="guessButton">Submit</button>
+				</form>
+			</div>
+
+			<div class="right col-md">
+				<div id="countdown"></div>
+				<div id="score"></div>
+				<div id="category"></div>
+			</div>
+		</div>
 	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
