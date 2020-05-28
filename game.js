@@ -6,12 +6,14 @@
       this.letterButton = $("#letterButton"),
       this.letterInput = $("#letterInput"),
       this.countdown = $("#countdown");
+      this.category = $("#category");
       this.score = $("#score");
       this.guess = $("#guess"),
       this.wrong = $("#wrong"),
       this.rightGuesses = [],
       this.wrongGuesses = [],
       this.words = words,
+      this.categoryName = this.randomCategory();
       this.word = this.randomWord(),
       this.remainingLetters = this.word.length;
       this.remainingTime = 0;
@@ -39,16 +41,34 @@
       var distance = countDownDate - now;
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      this.remainingTime = seconds;
+      this.remainingTime = seconds + minutes;
+      if (minutes < 10) {
+        minutes = "0" + minutes;
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
       countdown.text(minutes + ":" + seconds);
       if (distance < 0) {
+        clearInterval(x);
+        countdown.text("00:00");
         this.gameOver();
         alert("Time's up!");
       }
     },
 
+    randomCategory: function() {
+      var categoryList = Object.keys(this.words);
+      var rank = Math.floor(Math.random() * categoryList.length);
+      var category = (categoryList[rank]);
+      this.category.text(category);
+      return category;
+    },
+
     randomWord: function(){
-      var word = (this.words[Math.floor(Math.random() * this.words.length)]).toLowerCase();
+      var category = this.categoryName;
+      var categoryWords = this.words[category];
+      var word = (categoryWords[Math.floor(Math.random() * categoryWords.length)]).toLowerCase();
       console.log(word);
       this._wordLine(word);
       return word;
@@ -135,7 +155,11 @@
   
   };
 
-  var words = ["chrome", "firefox", "codepen", "javascript", "jquery", "twitter", "github", "wordpress", "opera", "sass", "layout", "standards", "semantic", "designer", "developer", "module", "component", "website", "creative", "banner", "browser", "screen", "mobile", "footer", "header", "typography", "responsive", "programmer", "css", "border", "compass", "grunt", "pixel", "document", "object", "ruby", "modernizr", "bootstrap", "python", "php", "pattern", "ajax", "node", "element", "android", "application", "adobe", "apple", "google", "microsoft", "bookmark", "internet", "icon", "svg", "background", "property", "syntax", "flash", "html", "font", "blog", "network", "server", "content", "database", "socket", "function", "variable", "link", "apache", "query", "proxy", "backbone", "angular", "email", "underscore", "cloud"];
+  var programmation = ["chrome", "firefox", "codepen", "javascript", "jquery", "twitter", "github", "wordpress", "opera", "sass", "layout", "standards", "semantic", "designer", "developer", "module", "component", "website", "creative", "banner", "browser", "screen", "mobile", "footer", "header", "typography", "responsive", "programmer", "css", "border", "compass", "grunt", "pixel", "document", "object", "ruby", "modernizr", "bootstrap", "python", "php", "pattern", "ajax", "node", "element", "android", "application", "adobe", "apple", "google", "microsoft", "bookmark", "internet", "icon", "svg", "background", "property", "syntax", "flash", "html", "font", "blog", "network", "server", "content", "database", "socket", "function", "variable", "link", "apache", "query", "proxy", "backbone", "angular", "email", "underscore", "cloud"];
+  var food = ["banana", "apple", "pear", "cherry", "steak", "mango", "pineapple", "chips", "sugar", "coke", "water", "cucumber", "zucchini", "pumpkin", "chocolate cake", "tea", "coffee", "milk", "capuccino", "salt", "pepper", "honey", "chicken", "turkey", "crumble", "apple pie", "beans", "lettuce", "corn", "garlic", "celery", "peanut", "artichoke", "aspargus", "leef", "chili pepper", "lemon", "mushroom", "turnip", "green bean", "croissant", "bread", "salmon", "tuna fish", "hamburger", "hot dog", "pancake", "cheeseburger", "french fries", "bagel", "muffin", "cookie", "blackberry", "pizza", "tiramisu", "gnocchi", "oil", "butter", "mozzarella", "pickle", "yogurt', 'ice cream", "cornflakes", "snadwich", "egg", "biscuit", "sausage", "raspberry", "jam", "ham", "cheese", "sour cream", "kebab", "mussle", "sushi", "burrito", "baguette", "bacon", "noodle", "bretzel", "pudding", "whisky"];
+  var animal = ["horse", "cat", "turtle", "bird", "rabbit", "dog", "monkey", "donkey", "calf", "rooster", "turkey", "sheep", "shark", "chick", "hen", "bull", "lemur", "mountain goat", "camel", "caribou", "hedgehog", "dragonfly", "seahorse", "butterfly", "elephant", "snail", "tortoise", "fox", "bat", "frog", "wild rabbit", "duck", "spider", "goose", "kangaroo", "koala", "fly", "mosquito", "wolf", "elk", "squirell", "chimpanzee", "coyote", "blue whale", "raccoon", "dolphin", "panda", "ostrich", "zebra", "crow", "magpie", "octopus", "owl", "mole", "deer", "ox", "walrus", "mouse", "eel", "sturgeon", "anchovy", "clownfish", "carp", "barracuda", "squid", "jellyfish", "hammer fish", "lizard", "cheetah", "hyena", "bison", "falcon", "beaver", "mockingbird", "hummingbird", "oyster", "okapi", "woodpecker", "lynx", "marten", "orangutan"];
+  var country = ["france", "united kingdom", "spain", "yemen", "uruguay", "qatar", "finland", "sweden", "switzerland", "germany", "japan", "jamaica", "brazil", "togo", "bangladesh", "new zealand", "fiji", "suva", "norway", "cyprus", "turkey", "uzbekistan", "afghanistan", "guatemala", "ecuador", "russia", "mexico", "italy", "poland", "belarus", "latvia", "lithuania", "estonia", "mali", "botswana", "rwanda", "south africa", "namibia", "kenya", "australia", "papua new guinea", "samoa", "senegal", "czech republic", "portugal", "nicaragua", "belize", "taiwan", "south korea", "thailand", "vietnam", "greece", "sierra leone", "benin", "uganda", "colombia", "peru", "chile", "austria", "luxembourg", "liechtenstein", "india", "sri lanka", "nepal", "malaysia", "oman", "saudi arabia", "ukraine", "bhutan", "laos", "chad", "djibouti", "venezuela", "niger", "croatia"];
+  var words = {programmation:programmation, country:country};
 
   Hangman.init(words);
   
