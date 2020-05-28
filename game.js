@@ -1,29 +1,31 @@
 (function($, window, undefined){
 
   Hangman = {
-    init: function(words){
+    init: function(words,score){
       this.guessForm = $("#guessForm"),
       this.letterButton = $("#letterButton"),
       this.letterInput = $("#letterInput"),
-      this.countdown = $("#countdown");
-      this.category = $("#category");
-      this.score = $("#score");
+      this.countdown = $("#countdown"),
+      this.categoryTitle = $("#category"),
+      this.scoreTitle = $("#score"),
+      this.restartButton = $("#restartButton"),
       this.guess = $("#guess"),
       this.wrong = $("#wrong"),
       this.rightGuesses = [],
       this.wrongGuesses = [],
       this.words = words,
-      this.categoryName = this.randomCategory();
+      this.category = this.randomCategory(),
+      this.score = 0 + score,
       this.word = this.randomWord(),
-      this.remainingLetters = this.word.length;
-      this.remainingTime = 0;
-      this.tryNumber = 0;
+      this.remainingLetters = this.word.length,
+      this.remainingTime = 0,
+      this.tryNumber = 0,
       this.setup();
     },
 
     setup: function(){
       this.guessForm.on("submit", $.proxy(this.checkLetter, this));
-      this.setTimer(0,10);
+      this.setTimer(0,20);
     },
 
     setTimer: function(min,sec){
@@ -61,12 +63,12 @@
       var categoryList = Object.keys(this.words);
       var rank = Math.floor(Math.random() * categoryList.length);
       var category = (categoryList[rank]);
-      this.category.text(category);
+      this.categoryTitle.text(category);
       return category;
     },
 
     randomWord: function(){
-      var category = this.categoryName;
+      var category = this.category;
       var categoryWords = this.words[category];
       var word = (categoryWords[Math.floor(Math.random() * categoryWords.length)]).toLowerCase();
       console.log(word);
@@ -132,8 +134,8 @@
     },
 
     gameOver: function() {
-      this.letterInput.attr("disabled","disabled");
-      this.letterButton.attr("disabled","disabled");
+      this.letterInput.css('visibility', 'hidden');;
+      this.letterButton.css("visibility","hidden");
       var word = this.word;
       var rightGuesses = this.rightGuesses;
       var guess = this.guess;
@@ -142,6 +144,7 @@
       };
       guess.text(rightGuesses.join(" "));
       this.scoreCount();
+      this.restartButton.css('visibility', 'visible');
     },
 
     scoreCount: function() {
@@ -150,7 +153,7 @@
       var right = tryNumber - wrong;
       var time = this.remainingTime;
       var result = time*5 + right*5 - wrong*5;
-      this.score.text(result + " pts");
+      this.scoreTitle.text(result + " pts");
     }
   
   };
@@ -159,8 +162,8 @@
   var food = ["banana", "apple", "pear", "cherry", "steak", "mango", "pineapple", "chips", "sugar", "coke", "water", "cucumber", "zucchini", "pumpkin", "chocolate cake", "tea", "coffee", "milk", "capuccino", "salt", "pepper", "honey", "chicken", "turkey", "crumble", "apple pie", "beans", "lettuce", "corn", "garlic", "celery", "peanut", "artichoke", "aspargus", "leef", "chili pepper", "lemon", "mushroom", "turnip", "green bean", "croissant", "bread", "salmon", "tuna fish", "hamburger", "hot dog", "pancake", "cheeseburger", "french fries", "bagel", "muffin", "cookie", "blackberry", "pizza", "tiramisu", "gnocchi", "oil", "butter", "mozzarella", "pickle", "yogurt', 'ice cream", "cornflakes", "snadwich", "egg", "biscuit", "sausage", "raspberry", "jam", "ham", "cheese", "sour cream", "kebab", "mussle", "sushi", "burrito", "baguette", "bacon", "noodle", "bretzel", "pudding", "whisky"];
   var animal = ["horse", "cat", "turtle", "bird", "rabbit", "dog", "monkey", "donkey", "calf", "rooster", "turkey", "sheep", "shark", "chick", "hen", "bull", "lemur", "mountain goat", "camel", "caribou", "hedgehog", "dragonfly", "seahorse", "butterfly", "elephant", "snail", "tortoise", "fox", "bat", "frog", "wild rabbit", "duck", "spider", "goose", "kangaroo", "koala", "fly", "mosquito", "wolf", "elk", "squirell", "chimpanzee", "coyote", "blue whale", "raccoon", "dolphin", "panda", "ostrich", "zebra", "crow", "magpie", "octopus", "owl", "mole", "deer", "ox", "walrus", "mouse", "eel", "sturgeon", "anchovy", "clownfish", "carp", "barracuda", "squid", "jellyfish", "hammer fish", "lizard", "cheetah", "hyena", "bison", "falcon", "beaver", "mockingbird", "hummingbird", "oyster", "okapi", "woodpecker", "lynx", "marten", "orangutan"];
   var country = ["france", "united kingdom", "spain", "yemen", "uruguay", "qatar", "finland", "sweden", "switzerland", "germany", "japan", "jamaica", "brazil", "togo", "bangladesh", "new zealand", "fiji", "suva", "norway", "cyprus", "turkey", "uzbekistan", "afghanistan", "guatemala", "ecuador", "russia", "mexico", "italy", "poland", "belarus", "latvia", "lithuania", "estonia", "mali", "botswana", "rwanda", "south africa", "namibia", "kenya", "australia", "papua new guinea", "samoa", "senegal", "czech republic", "portugal", "nicaragua", "belize", "taiwan", "south korea", "thailand", "vietnam", "greece", "sierra leone", "benin", "uganda", "colombia", "peru", "chile", "austria", "luxembourg", "liechtenstein", "india", "sri lanka", "nepal", "malaysia", "oman", "saudi arabia", "ukraine", "bhutan", "laos", "chad", "djibouti", "venezuela", "niger", "croatia"];
-  var words = {programmation:programmation, country:country};
+  var words = {programmation:programmation, food:food, animal:animal, country:country};
 
-  Hangman.init(words);
+  Hangman.init(words,0);
   
 })(jQuery, window);
