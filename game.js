@@ -6,6 +6,7 @@
       this.letterButton = $("#letterButton"),
       this.letterInput = $("#letterInput"),
       this.countdown = $("#countdown");
+      this.score = $("#score");
       this.guess = $("#guess"),
       this.wrong = $("#wrong"),
       this.rightGuesses = [],
@@ -13,8 +14,8 @@
       this.words = words,
       this.word = this.randomWord(),
       this.remainingLetters = this.word.length;
+      this.remainingTime = 0;
       this.tryNumber = 0;
-      this.score = 0,
       this.setup();
     },
 
@@ -38,15 +39,10 @@
       var distance = countDownDate - now;
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      this.remainingTime = seconds;
       countdown.text(minutes + ":" + seconds);
       if (distance < 0) {
-        clearInterval(x);
-        countdown.text("00:00");
         this.gameOver();
-        for (var i = 0; i < word.length; i++) {
-          rightGuesses[i] = word[i];
-        };
-        guess.text(rightGuesses.join(" "));
         alert("Time's up!");
       }
     },
@@ -95,7 +91,7 @@
         }
       };
       if (this.remainingLetters == 0) {     //Mot entier deviné
-        alert("CONGRATS! You've won!");
+        this.gameWon();
       }
     },
 
@@ -109,9 +105,32 @@
       }
     },
 
+    gameWon: function() {
+      clearInterval(x);   //Stop du chrono
+      alert("CONGRATS! You've won!");
+      this.scoreCount();
+    },
+
     gameOver: function() {
       this.letterInput.attr("disabled","disabled");
       this.letterButton.attr("disabled","disabled");
+      var word = this.word;
+      var rightGuesses = this.rightGuesses;
+      var guess = this.guess;
+      for (var i = 0; i < word.length; i++) {   //Affichage du mot
+        rightGuesses[i] = word[i];
+      };
+      guess.text(rightGuesses.join(" "));
+      this.scoreCount();
+    },
+
+    scoreCount: function() {
+      var tryNumber = this.tryNumber;
+      var wrong = this.wrongGuesses.length;
+      var right = tryNumber - wrong;
+      var time = this.remainingTime;
+      var result = time*5 + right*5 - wrong*5;
+      this.score.text(result + " pts");
     }
   
   };
