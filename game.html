@@ -33,18 +33,28 @@
 	<div class="container">
 		<div class="row">
 			<div class="left col-md">
+				<div id="hangman"></div>
+				<div id="wrong"></div>
 			</div>
 
 			<div class="center col-md">
-				<form action="game.html">
-					<button id="startButton" class="btn btn-light btn-large" type="submit">Start</button>
+				<div id="guess"></div>
+				<form id="guessForm">
+					<input type="text" id="letterInput" pattern="[A-Za-z]" maxlength="1" placeholder="Enter a letter" autofocus></input>
+					<button type="submit" class="btn btn-light" id="letterButton">Submit</button>
 				</form>
 			</div>
 
 			<div class="right col-md">
+				<div id="countdown"></div>
+				<div id="score"></div>
+				<div id="category"></div>
 			</div>
 		</div>
 	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="game.js"></script>
 </body>
 
 </html>

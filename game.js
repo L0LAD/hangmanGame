@@ -14,7 +14,6 @@
       this.word = this.randomWord(),
       this.remainingLetters = this.word.length;
       this.tryNumber = 0;
-      this.over = false;
       this.score = 0,
       this.setup();
     },
@@ -67,7 +66,7 @@
     },
 
     checkLetter: function (form) {
-      form.preventDefault();
+      form.preventDefault();    //Empêche le rechargement de la page lorsque le formulaire est soumis
       var letter = this.letterInput.val();
       var word = this.word;
       var rightGuesses = this.rightGuesses;
@@ -95,7 +94,7 @@
           this.remainingLetters--;
         }
       };
-      if (this.remainingLetters == 0) {
+      if (this.remainingLetters == 0) {     //Mot entier deviné
         alert("CONGRATS! You've won!");
       }
     },
@@ -104,14 +103,13 @@
       var wrongGuesses = this.wrongGuesses;
       wrongGuesses.push(letter);
       this.wrong.text(wrongGuesses.join(" "));
-      if (wrongGuesses.length==11) {
+      if (wrongGuesses.length==11) {      //Pendu dessiné en entier
         alert("YOU LOST!");
         this.gameOver();
       }
     },
 
     gameOver: function() {
-      console.log("I am in");
       this.letterInput.attr("disabled","disabled");
       this.letterButton.attr("disabled","disabled");
     }
