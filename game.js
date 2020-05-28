@@ -2,7 +2,7 @@
 
   Hangman = {
     init: function(words){
-      this.guessForm = $(".guessForm"),
+      this.guessForm = $("#guessForm"),
       this.letterButton = $("#letterButton"),
       this.letterInput = $("#letterInput"),
       this.countdown = $("#countdown");
@@ -11,69 +11,52 @@
       this.rightGuesses = [],
       this.wrongGuesses = [],
       this.words = words,
-      this.wordData = this.randomWord(),
+      this.word = this.randomWord(),
+      this.remainingLetters = this.word.length;
+      this.tryNumber = 0;
+      this.over = false;
       this.score = 0,
       this.setup();
     },
 
     setup: function(){
       this.guessForm.on("submit", $.proxy(this.checkLetter, this));
-      this.timer(0,5);
+      this.setTimer(0,10);
     },
 
-    timer: function(min,sec){
-      //Minuteur limitant le temps de jeu de chaque partie
-      var countdown = this.countdown;
-      var letterInput = this.letterInput;
-      var letterButton = this.letterButton;
-      var word = this.wordData.word;
-      var guess = this.guess;
-      var rightGuesses = this.rightGuesses;
+    setTimer: function(min,sec){
       var duration = 1000*(min*60+sec);
       var countDownDate = new Date().getTime() + duration;
-      var x = setInterval(function() {
-        var now = new Date().getTime();
-        var distance = countDownDate - now;
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        countdown.text(minutes + ":" + seconds);
-        if (distance < 0) {
-          clearInterval(x);
-          countdown.text("00:00");
-          letterInput.attr("disabled","disabled");
-          letterButton.attr("disabled","disabled");
-          for (var i = 0; i < word.length; i++) {
-            rightGuesses[i] = word[i];
-          };
-          guess.text(rightGuesses.join(" "));
-          alert("Time's up!");
-        }
-      }, 1000);
+      x = setInterval(() => this.runTimer(countDownDate), 1000);
+    },
+
+    runTimer: function(countDownDate) {
+      var countdown = this.countdown;
+      var word = this.word;
+      var guess = this.guess;
+      var rightGuesses = this.rightGuesses;
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      countdown.text(minutes + ":" + seconds);
+      if (distance < 0) {
+        clearInterval(x);
+        countdown.text("00:00");
+        this.gameOver();
+        for (var i = 0; i < word.length; i++) {
+          rightGuesses[i] = word[i];
+        };
+        guess.text(rightGuesses.join(" "));
+        alert("Time's up!");
+      }
     },
 
     randomWord: function(){
-      var wordData = this._wordData(this.words[Math.floor(Math.random() * this.words.length)]);
-      this._wordLine(wordData.word);
-      return wordData;
-    },
-
-    _wordData: function(word){
-      return {
-        letters: this._letters(word),
-        word: word.toLowerCase(),
-        totalLetters: word.length
-      };
-    },
-
-    _letters: function(word){
-      var letters = [];
-      for(var i=0; i<word.length; i++){
-        letters.push({
-          letter: word[i],
-          pos: i
-        });
-      }
-      return letters;
+      var word = (this.words[Math.floor(Math.random() * this.words.length)]).toLowerCase();
+      console.log(word);
+      this._wordLine(word);
+      return word;
     },
 
     _wordLine: function(word) {
@@ -81,6 +64,56 @@
         this.rightGuesses[i] = "_";
       }
       this.guess.text(this.rightGuesses.join(" "));
+    },
+
+    checkLetter: function (form) {
+      form.preventDefault();
+      var letter = this.letterInput.val();
+      var word = this.word;
+      var rightGuesses = this.rightGuesses;
+      var wrongGuesses = this.wrongGuesses;
+      if (letter.length == 1) {
+        if ($.inArray(letter,rightGuesses)<0 && $.inArray(letter,wrongGuesses)<0) {     //Lettre pas encore proposée
+          this.tryNumber++;
+          if (word.includes(letter)) {   //Lettre correcte
+            this.rightGuess(letter);
+          } else {    //Mauvaise lettre
+            this.wrongGuess(letter);
+          }
+        }        
+      }
+      this.letterInput.val("").focus();
+    },
+
+    rightGuess: function(letter) {
+      var word = this.word;
+      var rightGuesses = this.rightGuesses;
+      for (var i = 0; i < word.length; i++) {
+        if (word[i] == letter) {
+          rightGuesses[i] = letter;
+          this.guess.text(rightGuesses.join(" "));
+          this.remainingLetters--;
+        }
+      };
+      if (this.remainingLetters == 0) {
+        alert("CONGRATS! You've won!");
+      }
+    },
+
+    wrongGuess: function(letter) {
+      var wrongGuesses = this.wrongGuesses;
+      wrongGuesses.push(letter);
+      this.wrong.text(wrongGuesses.join(" "));
+      if (wrongGuesses.length==11) {
+        alert("YOU LOST!");
+        this.gameOver();
+      }
+    },
+
+    gameOver: function() {
+      console.log("I am in");
+      this.letterInput.attr("disabled","disabled");
+      this.letterButton.attr("disabled","disabled");
     }
   
   };
