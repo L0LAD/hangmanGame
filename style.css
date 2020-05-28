@@ -9,17 +9,13 @@ html, body {
 	font-family: "Love Ya Like A Sister";
 }
 
-header {
-	padding-top: 8%;
-	text-align: center;
-}
-
 .container {
 	height: 100%;
 }
 
 .left {
-
+	text-align: center;
+	margin-top: 20%;
 }
 
 .center {
@@ -27,7 +23,15 @@ header {
 }
 
 .right {
-	
+	text-align: center;
+	margin-top: 20%;
+	font-size: 1.5em;
+	line-height: 1.5;
+}
+
+h1 {
+	text-align: center;
+	margin: 20% 0;
 }
 
 #startButton {
@@ -35,4 +39,12 @@ header {
 	padding: 0.8rem 1.2rem;
 	border-radius: 15%;
 	font-size: 2em;
+}
+
+#countdown {
+	font-size: 2.5em;
+}
+
+#restartButton {
+	visibility: hidden;
 }
