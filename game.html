@@ -38,16 +38,16 @@
 				<h1>Hangman Game</h1>
 				<div id="guess"></div>
 				<form id="guessForm">
-					<input type="text" id="letterInput" pattern="[A-Za-z]" maxlength="1" placeholder="Enter a letter" autofocus></input>
+					<input type="text" id="letterInput" pattern="[A-Za-z]" maxlength="1" placeholder="Enter a letter" autocomplete="off" autofocus></input>
 					<button type="submit" class="btn btn-light" id="letterButton">Submit</button>
 				</form>
-				<button type="submit" class="btn btn-light" id="restartButton">Play again?</button>
 			</div>
 
 			<div class="right col-md">
 				<div id="countdown"></div>
 				<div id="category"></div>
 				<div id="score">0 pts</div>
+				<button type="submit" class="btn btn-light" id="restartButton">Play again?</button>
 			</div>
 		</div>
 	</div>

@@ -14,18 +14,21 @@
       this.rightGuesses = [],
       this.wrongGuesses = [],
       this.words = words,
-      this.category = this.randomCategory(),
-      this.score = 0 + score,
-      this.word = this.randomWord(),
-      this.remainingLetters = this.word.length,
+      this.category = "",
+      this.score = score,
+      this.remainingLetters = 0,
+      this.word = "",
       this.remainingTime = 0,
       this.tryNumber = 0,
       this.setup();
     },
 
     setup: function(){
+      this.category = this.randomCategory();
+      this.word = this.randomWord();
       this.guessForm.on("submit", $.proxy(this.checkLetter, this));
-      this.setTimer(0,20);
+      this.restartButton.on("click", $.proxy(this.restart, this));
+      this.setTimer(0,10);
     },
 
     setTimer: function(min,sec){
@@ -72,13 +75,19 @@
       var categoryWords = this.words[category];
       var word = (categoryWords[Math.floor(Math.random() * categoryWords.length)]).toLowerCase();
       console.log(word);
+      this.remainingLetters = word.length;
       this._wordLine(word);
       return word;
     },
 
     _wordLine: function(word) {
       for (var i = 0; i < word.length; i++) {
-        this.rightGuesses[i] = "_";
+        if (word[i]==" " || word[i]=="-") {
+          this.rightGuesses[i] = word[i];
+          this.remainingLetters -= 1;
+        } else {
+          this.rightGuesses[i] = "_";
+        }
       }
       this.guess.text(this.rightGuesses.join(" "));
     },
@@ -128,14 +137,12 @@
     },
 
     gameWon: function() {
-      clearInterval(x);   //Stop du chrono
       alert("CONGRATS! You've won!");
       this.scoreCount();
+      this.gameEnd();
     },
 
     gameOver: function() {
-      this.letterInput.css('visibility', 'hidden');;
-      this.letterButton.css("visibility","hidden");
       var word = this.word;
       var rightGuesses = this.rightGuesses;
       var guess = this.guess;
@@ -143,8 +150,16 @@
         rightGuesses[i] = word[i];
       };
       guess.text(rightGuesses.join(" "));
-      this.scoreCount();
-      this.restartButton.css('visibility', 'visible');
+      this.score = 0;
+      this.gameEnd();
+    },
+
+    gameEnd: function() {
+      clearInterval(x);   //Stop du chrono
+      this.letterInput.css('visibility', 'hidden');
+      this.letterButton.css('visibility', 'hidden');
+      this.restartButton.css('visibility', 'visible');  
+      this.restartButton.prop('disabled', false);    
     },
 
     scoreCount: function() {
@@ -152,14 +167,33 @@
       var wrong = this.wrongGuesses.length;
       var right = tryNumber - wrong;
       var time = this.remainingTime;
-      var result = time*5 + right*5 - wrong*5;
-      this.scoreTitle.text(result + " pts");
+      var score = time*5 + right*5 - wrong*5;
+      if (score < 0) {
+        score = 0;
+      }
+      var total = this.score + score;
+      console.log("old " + this.score);
+      console.log("new " + score);
+      this.scoreTitle.text(total + " pts");
+      this.score = total;
+    },
+
+    restart: function(e) {
+      e.preventDefault();
+      this.letterInput.css('visibility', 'visible');
+      this.letterInput.focus();
+      this.letterButton.css('visibility', 'visible');
+      this.restartButton.css('visibility', 'hidden');
+      this.restartButton.prop('disabled', true);
+      this.wrong.text("");
+      console.log("restart : " + this.score);
+      this.init(this.words, this.score);
     }
   
   };
 
   var programmation = ["chrome", "firefox", "codepen", "javascript", "jquery", "twitter", "github", "wordpress", "opera", "sass", "layout", "standards", "semantic", "designer", "developer", "module", "component", "website", "creative", "banner", "browser", "screen", "mobile", "footer", "header", "typography", "responsive", "programmer", "css", "border", "compass", "grunt", "pixel", "document", "object", "ruby", "modernizr", "bootstrap", "python", "php", "pattern", "ajax", "node", "element", "android", "application", "adobe", "apple", "google", "microsoft", "bookmark", "internet", "icon", "svg", "background", "property", "syntax", "flash", "html", "font", "blog", "network", "server", "content", "database", "socket", "function", "variable", "link", "apache", "query", "proxy", "backbone", "angular", "email", "underscore", "cloud"];
-  var food = ["banana", "apple", "pear", "cherry", "steak", "mango", "pineapple", "chips", "sugar", "coke", "water", "cucumber", "zucchini", "pumpkin", "chocolate cake", "tea", "coffee", "milk", "capuccino", "salt", "pepper", "honey", "chicken", "turkey", "crumble", "apple pie", "beans", "lettuce", "corn", "garlic", "celery", "peanut", "artichoke", "aspargus", "leef", "chili pepper", "lemon", "mushroom", "turnip", "green bean", "croissant", "bread", "salmon", "tuna fish", "hamburger", "hot dog", "pancake", "cheeseburger", "french fries", "bagel", "muffin", "cookie", "blackberry", "pizza", "tiramisu", "gnocchi", "oil", "butter", "mozzarella", "pickle", "yogurt', 'ice cream", "cornflakes", "snadwich", "egg", "biscuit", "sausage", "raspberry", "jam", "ham", "cheese", "sour cream", "kebab", "mussle", "sushi", "burrito", "baguette", "bacon", "noodle", "bretzel", "pudding", "whisky"];
+  var food = ["banana", "apple", "pear", "cherry", "steak", "mango", "pineapple", "chips", "sugar", "coke", "water", "cucumber", "zucchini", "pumpkin", "chocolate cake", "tea", "coffee", "milk", "capuccino", "salt", "pepper", "honey", "chicken", "turkey", "crumble", "apple pie", "beans", "lettuce", "corn", "garlic", "celery", "peanut", "artichoke", "aspargus", "leef", "chili pepper", "lemon", "mushroom", "turnip", "green bean", "croissant", "bread", "salmon", "tuna fish", "hamburger", "hot dog", "pancake", "cheeseburger", "french fries", "bagel", "muffin", "cookie", "blackberry", "pizza", "tiramisu", "gnocchi", "oil", "butter", "mozzarella", "pickle", "yogurt", "ice cream", "cornflakes", "snadwich", "egg", "biscuit", "sausage", "raspberry", "jam", "ham", "cheese", "sour cream", "kebab", "mussle", "sushi", "burrito", "baguette", "bacon", "noodle", "bretzel", "pudding", "whisky"];
   var animal = ["horse", "cat", "turtle", "bird", "rabbit", "dog", "monkey", "donkey", "calf", "rooster", "turkey", "sheep", "shark", "chick", "hen", "bull", "lemur", "mountain goat", "camel", "caribou", "hedgehog", "dragonfly", "seahorse", "butterfly", "elephant", "snail", "tortoise", "fox", "bat", "frog", "wild rabbit", "duck", "spider", "goose", "kangaroo", "koala", "fly", "mosquito", "wolf", "elk", "squirell", "chimpanzee", "coyote", "blue whale", "raccoon", "dolphin", "panda", "ostrich", "zebra", "crow", "magpie", "octopus", "owl", "mole", "deer", "ox", "walrus", "mouse", "eel", "sturgeon", "anchovy", "clownfish", "carp", "barracuda", "squid", "jellyfish", "hammer fish", "lizard", "cheetah", "hyena", "bison", "falcon", "beaver", "mockingbird", "hummingbird", "oyster", "okapi", "woodpecker", "lynx", "marten", "orangutan"];
   var country = ["france", "united kingdom", "spain", "yemen", "uruguay", "qatar", "finland", "sweden", "switzerland", "germany", "japan", "jamaica", "brazil", "togo", "bangladesh", "new zealand", "fiji", "suva", "norway", "cyprus", "turkey", "uzbekistan", "afghanistan", "guatemala", "ecuador", "russia", "mexico", "italy", "poland", "belarus", "latvia", "lithuania", "estonia", "mali", "botswana", "rwanda", "south africa", "namibia", "kenya", "australia", "papua new guinea", "samoa", "senegal", "czech republic", "portugal", "nicaragua", "belize", "taiwan", "south korea", "thailand", "vietnam", "greece", "sierra leone", "benin", "uganda", "colombia", "peru", "chile", "austria", "luxembourg", "liechtenstein", "india", "sri lanka", "nepal", "malaysia", "oman", "saudi arabia", "ukraine", "bhutan", "laos", "chad", "djibouti", "venezuela", "niger", "croatia"];
   var words = {programmation:programmation, food:food, animal:animal, country:country};
