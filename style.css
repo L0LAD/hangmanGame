@@ -13,25 +13,51 @@ html, body {
 	height: 100%;
 }
 
+/* -----------------------------------------------
+---------------------- LEFT ----------------------
+----------------------------------------------- */
+
 .left {
-	text-align: center;
-	margin-top: 20%;
+	margin-top: 12%;
 }
+
+#wrong {
+	margin: 75% 20%;
+	position: absolute;
+	width: 45%;
+	text-align: left;
+	font-size: 2em;
+	line-height: 1em;
+}
+
+#hangman img {
+	position: absolute;
+	margin: 0 10%;
+	visibility: hidden;
+	width: 280px;
+}
+
+#hangman .animation {
+	animation-name: hangman;
+  	animation-duration: 1.2s;
+}
+
+@keyframes hangman {
+	0%   {opacity:0;}
+	100% {opacity:1;}
+}
+
+/* -----------------------------------------------
+--------------------- CENTER ---------------------
+----------------------------------------------- */
 
 .center {
 	text-align: center;
 }
 
-.right {
-	text-align: center;
-	margin-top: 20%;
-	font-size: 1.5em;
-	line-height: 1.5;
-}
-
 h1 {
 	text-align: center;
-	margin: 20% 0;
+	margin: 30% 0;
 }
 
 #startButton {
@@ -41,7 +67,7 @@ h1 {
 	font-size: 2em;
 }
 
-#countdown {
+#guess {
 	font-size: 2.5em;
 }
 
@@ -49,12 +75,34 @@ h1 {
 	margin-top: 20%;
 }
 
-#guess {
-	font-size: 2.5em;
+input {
+	width : 10em;
+	background-color: transparent;
+	border: none;
+  	border-bottom: 2px solid white;
+  	color: white;
+  	text-align: center;
+  	font-size: 1.2em;
 }
 
-#wrong {
-	font-size: 2em;
+#message {
+	margin-top: 20%;
+	font-size: 4em;
+}
+
+/* ------------------------------------------------
+---------------------- RIGHT ----------------------
+------------------------------------------------ */
+
+.right {
+	text-align: center;
+	margin-top: 20%;
+	font-size: 1.5em;
+	line-height: 1.5;
+}
+
+#countdown {
+	font-size: 2.5em;
 }
 
 #restartButton {
