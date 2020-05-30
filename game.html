@@ -30,13 +30,27 @@
 	<div class="container">
 		<div class="row">
 			<div class="left col-md">
-				<div id="hangman"></div>
+				<div id="hangman">
+					<img id="hangman_1" src="img/hangman_1.png">
+					<img id="hangman_2" src="img/hangman_2.png">
+					<img id="hangman_3" src="img/hangman_3.png">
+					<img id="hangman_4" src="img/hangman_4.png">
+					<img id="hangman_5" src="img/hangman_5.png">
+					<img id="hangman_6" src="img/hangman_6.png">
+					<img id="hangman_7" src="img/hangman_7.png">
+					<img id="hangman_8" src="img/hangman_8.png">
+					<img id="hangman_9" src="img/hangman_9.png">
+					<img id="hangman_10" src="img/hangman_10.png">
+					<img id="hangman_11" src="img/hangman_11.png">
+				</div>
 				<div id="wrong"></div>
 			</div>
 
 			<div class="center col-md">
 				<h1>Hangman Game</h1>
 				<div id="guess"></div>
+				<div id="message">
+				</div>
 				<form id="guessForm">
 					<input type="text" id="letterInput" pattern="[A-Za-z]" maxlength="1" placeholder="Enter a letter" autocomplete="off" autofocus></input>
 					<button type="submit" class="btn btn-light" id="letterButton">Submit</button>
@@ -47,7 +61,7 @@
 				<div id="countdown"></div>
 				<div id="category"></div>
 				<div id="score">0 pts</div>
-				<button type="submit" class="btn btn-light" id="restartButton">Play again?</button>
+				<button type="submit" class="btn btn-light" id="restartButton" onClick="window.location.reload()">Play again?</button>
 			</div>
 		</div>
 	</div>
